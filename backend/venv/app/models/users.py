@@ -21,11 +21,16 @@ class User(Base):
     full_name = Column(String, nullable=False)
 
     role = Column(
-        Enum(UserRole),
+        Enum(
+            UserRole,
+            values_callable=lambda x: [e.value for e in x],
+            name="user_role"
+        ),
+        nullable=False,
+        default=UserRole.USER,
         server_default=UserRole.USER.value,
-        nullable=False
     )
-
+    
     created_at = Column(
         DateTime,
         server_default=func.now(),
