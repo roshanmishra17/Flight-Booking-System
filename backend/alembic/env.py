@@ -6,16 +6,16 @@ from sqlalchemy import pool
 from alembic import context
 
 
-from app.core.config import DATABASE_URL
-from app.core.database import Base
+from backend.app.core.config import DATABASE_URL
+from backend.app.core.database import Base
 
 # Import all your models
-import app.models
+import backend.app.models
 
 print(Base.metadata.tables.keys())
 
 # this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+# access to the es within the .ini file in use.
 config = context.config
 config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
