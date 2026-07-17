@@ -10,7 +10,9 @@ from app.core.config import DATABASE_URL
 from app.core.database import Base
 
 # Import all your models
-from app.models.users import User
+import app.models
+
+print(Base.metadata.tables.keys())
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
