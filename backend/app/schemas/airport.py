@@ -7,9 +7,11 @@ class AirportCreate(BaseModel):
 
     @field_validator("iata_code")
     @classmethod
-    def uppercase_iata(cls, value: str) -> str:
-        return value.upper()
-
+    def validate_iata_format(cls, v: str) -> str:
+        v = v.strip().upper()
+        if not v.isalpha():
+            raise ValueError("IATA code must contain only letters")
+        return v
     name: str = Field(min_length=2, max_length=255)
     city: str = Field(min_length=2, max_length=100)
     country: str = Field(min_length=2, max_length=100)
