@@ -48,27 +48,27 @@ class AuthService:
 
         return UserResponse.model_validate(user)
 
-@staticmethod
-def login(
-    db: Session,
-    credentials: UserLogin,
-) -> Token:
-    user = UserRepository.get_by_email(
-        db,
-        credentials.email,
-    )
+    @staticmethod
+    def login(
+        db: Session,
+        credentials: UserLogin,
+    ) -> Token:
+        user = UserRepository.get_by_email(
+            db,
+            credentials.email,
+        )
 
-    if not user:
-        raise InvalidCredentialsError("Invalid email or password.")
+        if not user:
+            raise InvalidCredentialsError("Invalid email or password.")
 
-    if not verify_password(
-        credentials.password,
-        user.password_hash,
-    ):
-        raise InvalidCredentialsError("Invalid email or password.")
+        if not verify_password(
+            credentials.password,
+            user.password_hash,
+        ):
+            raise InvalidCredentialsError("Invalid email or password.")
 
-    token = create_access_token(user.id)
+        token = create_access_token(user.id)
 
-    return Token(
-        access_token=token,
-    )
+        return Token(
+            access_token=token,
+        )
