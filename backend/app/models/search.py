@@ -13,7 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from backend.app.core.database import Base
+from app.core.database import Base
 from app.models.recommendation_weights import RecommendationMode
 from app.models.seats import SeatClass
 

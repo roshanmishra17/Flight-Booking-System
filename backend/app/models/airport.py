@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, CheckConstraint
-from backend.app.core.database import Base
+from app.core.database import Base
 from sqlalchemy.orm import relationship
 
 class Airport(Base):

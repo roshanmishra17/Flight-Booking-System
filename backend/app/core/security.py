@@ -8,7 +8,7 @@ from app.core.config import (
     ALGORITHM,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-from backend.app.schemas.users import TokenData
+from app.schemas.users import TokenData
 
 # Password hashing configuration
 pwd_context = CryptContext(
