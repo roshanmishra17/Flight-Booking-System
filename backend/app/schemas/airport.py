@@ -23,6 +23,18 @@ class AirportUpdate(BaseModel):
     city: str | None = Field(default=None, min_length=2, max_length=100,)
     country: str | None = Field(default=None, min_length=2, max_length=100)
 
+    @field_validator("iata_code")
+    @classmethod
+    def validate_iata_code(cls, v: str | None) -> str | None:
+        if v is None:
+            return v
+        v = v.strip().upper()
+        if not v.isalpha():
+            raise ValueError("IATA code must contain only letters")
+        return v
+
+
+
 
 class AirportResponse(BaseModel):
     id: int
