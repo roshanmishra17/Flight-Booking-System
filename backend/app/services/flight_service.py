@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import (
     AirportNotFoundError,
     FlightAlreadyExistsError,
+    FlightInUseError,
     FlightNotFoundError,
     InvalidFlightRouteError,
     InvalidFlightScheduleError,
