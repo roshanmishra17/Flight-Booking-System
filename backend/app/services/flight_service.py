@@ -124,8 +124,8 @@ class FlightService:
         departure_date: date,
     ) -> list[Flight]:
         
-        origin = origin.upper()
-        destination = destination.upper()
+        origin = origin_iata.upper()
+        destination = destination_iata.upper()
 
         origin = AirportRepository.get_by_iata_code(
             db,
