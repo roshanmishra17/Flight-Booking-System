@@ -22,3 +22,22 @@ class AirportNotFoundError(Exception):
 class AirportInUseError(Exception):
     """Raised when an airport cannot be deleted because flights reference it."""
     pass
+
+#Flight Exceptions
+class FlightNotFoundError(Exception):
+    pass
+
+
+class FlightAlreadyExistsError(Exception):
+    pass
+
+
+class FlightInUseError(Exception):
+    pass
+
+class InvalidFlightRouteError(Exception):
+    pass
+
+
+class InvalidFlightScheduleError(Exception):
+    pass
