@@ -1,13 +1,14 @@
 import enum
 
 from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    ForeignKey,
-    Enum,
-    Numeric,
     CheckConstraint,
+    Column,
+    Enum,
+    ForeignKey,
+    Index,
+    Integer,
+    Numeric,
+    String,
     UniqueConstraint,
     text,
 )
@@ -35,15 +36,22 @@ class Seat(Base):
             "price_multiplier > 0",
             name="ck_price_multiplier_positive",
         ),
+        Index(
+            "idx_flight_seat_class",
+            "flight_id",
+            "seat_class",
+        ),
     )
 
     id = Column(Integer, primary_key=True)
 
     flight_id = Column(
         Integer,
-        ForeignKey("flights.id"),
+        ForeignKey(
+            "flights.id",
+            ondelete="CASCADE",
+        ),
         nullable=False,
-        index=True
     )
 
     seat_number = Column(
@@ -58,8 +66,6 @@ class Seat(Base):
             name="seat_class",
         ),
         nullable=False,
-        default=SeatClass.ECONOMY,
-        server_default=text("'economy'"),
     )
 
     price_multiplier = Column(
@@ -71,8 +77,9 @@ class Seat(Base):
         "Flight",
         back_populates="seats",
     )
+
     bookings = relationship(
         "Booking",
         back_populates="seat",
-        passive_deletes=True,    
+        passive_deletes=True,
     )
