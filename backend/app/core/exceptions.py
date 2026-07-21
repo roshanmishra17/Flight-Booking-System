@@ -41,3 +41,24 @@ class InvalidFlightRouteError(Exception):
 
 class InvalidFlightScheduleError(Exception):
     pass
+
+
+# Seats Exceptions
+class SeatError(Exception):
+    """Base exception for seat-related errors."""
+    pass
+
+
+class SeatNotFoundError(SeatError):
+    """Raised when a seat does not exist."""
+    pass
+
+
+class FlightSeatsNotFoundError(SeatError):
+    """Raised when a flight has no seats."""
+    pass
+
+
+class UnsupportedAircraftTypeError(SeatError):
+    """Raised when no seat layout exists for the aircraft type."""
+    pass
