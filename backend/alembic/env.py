@@ -6,11 +6,11 @@ from sqlalchemy import pool
 from alembic import context
 
 
-from backend.app.core.config import DATABASE_URL
-from backend.app.core.database import Base
+from app.core.config import DATABASE_URL
+from app.core.database import Base
 
 # Import all your models
-import backend.app.models
+import app.models
 
 print(Base.metadata.tables.keys())
 

@@ -22,6 +22,11 @@ class SeatClass(enum.Enum):
     BUSINESS = "business"
     FIRST = "first"
 
+class SeatPosition(enum.Enum):
+    WINDOW = "window"
+    MIDDLE = "middle"
+    AISLE = "aisle"
+
 
 class Seat(Base):
     __tablename__ = "seats"
