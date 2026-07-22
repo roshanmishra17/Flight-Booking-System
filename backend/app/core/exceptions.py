@@ -62,3 +62,32 @@ class FlightSeatsNotFoundError(SeatError):
 class UnsupportedAircraftTypeError(SeatError):
     """Raised when no seat layout exists for the aircraft type."""
     pass
+
+
+#Booking Exception
+class BookingError(Exception):
+    """Base booking exception."""
+
+
+class BookingNotFoundError(BookingError):
+    pass
+
+
+class SeatAlreadyBookedError(BookingError):
+    pass
+
+
+class SeatNotBelongsToFlightError(BookingError):
+    pass
+
+
+class InvalidBookingStatusError(BookingError):
+    pass
+
+
+class BookingAlreadyCancelledError(BookingError):
+    pass
+
+
+class BookingAlreadyConfirmedError(BookingError):
+    pass
