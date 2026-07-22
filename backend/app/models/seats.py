@@ -72,6 +72,15 @@ class Seat(Base):
         nullable=False,
     )
 
+    seat_position = Column(
+        Enum(
+            SeatPosition,
+            values_callable=lambda x: [e.value for e in x],
+            name="seat_position",
+        ),
+        nullable=False,
+    )
+
     price_multiplier = Column(
         Numeric(4, 2),
         nullable=False,
