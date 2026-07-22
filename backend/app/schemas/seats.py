@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict
 
-from app.models.seats import SeatClass
+from app.models.seats import SeatClass, SeatPosition
 
 
 class SeatAvailability(enum.Enum):
@@ -16,11 +16,12 @@ class SeatResponse(BaseModel):
     id: int
     seat_number: str
     seat_class: SeatClass
+    seat_position: SeatPosition
     price_multiplier: Decimal
+    availability: SeatAvailability
 
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
+    model_config = ConfigDict(from_attributes=True)
+
 
 
 class SeatMapResponse(BaseModel):
