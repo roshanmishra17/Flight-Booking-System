@@ -15,6 +15,7 @@ from app.models.flights import Flight
 from app.repositories.airport_repository import AirportRepository
 from app.repositories.flight_repository import FlightRepository
 from app.schemas.flights import FlightCreate, FlightUpdate
+from app.services.seat_service import SeatService
 class FlightService:
     @staticmethod
     def create_flight(
@@ -82,15 +83,29 @@ class FlightService:
         )
 
         try:
-            return FlightRepository.create(
+            FlightRepository.create(
+                db,
+                flight,
+            )
+            db.flush()
+
+            SeatService.generate_for_flight(
                 db,
                 flight,
             )
 
+            db.commit()
+
+            db.refresh(flight)
+
+            return flight
+
         except IntegrityError:
+            db.rollback()
             raise FlightAlreadyExistsError(
                 "Flight already exists."
             )
+        
     @staticmethod
     def get_flight(
         db: Session,

@@ -45,15 +45,9 @@ class FlightRepository:
         db: Session,
         flight: Flight,
     ) -> Flight:
-        try:
             db.add(flight)
-            db.commit()
-            db.refresh(flight)
             return flight
 
-        except IntegrityError:
-            db.rollback()
-            raise
 
     @staticmethod
     def update(

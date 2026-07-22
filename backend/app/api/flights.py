@@ -57,6 +57,10 @@ def create_flight(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
+    
+    except Exception:
+        db.rollback()
+        raise
 
 @router.get(
     "/search",
