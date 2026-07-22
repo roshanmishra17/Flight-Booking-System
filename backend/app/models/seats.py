@@ -20,7 +20,6 @@ from app.core.database import Base
 class SeatClass(enum.Enum):
     ECONOMY = "economy"
     BUSINESS = "business"
-    FIRST = "first"
 
 class SeatPosition(enum.Enum):
     WINDOW = "window"
