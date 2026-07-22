@@ -2,7 +2,8 @@ from dataclasses import dataclass
 from decimal import Decimal
 import enum
 
-from app.models.seats import SeatClass, SeatPosition
+from app.models.seats import SeatClass
+from app.models.seats import SeatPosition
 
 
 
