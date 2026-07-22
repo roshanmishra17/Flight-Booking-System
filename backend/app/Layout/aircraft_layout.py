@@ -17,6 +17,14 @@ class SeatSection:
     seat_class: SeatClass
     price_multiplier: Decimal
 
+    def __post_init__(self):
+        for letter in self.seat_letters:
+            if letter not in self.seat_positions:
+                raise ValueError(
+                    f"seat_positions is missing an entry for letter '{letter}' "
+                    f"(seat_letters='{self.seat_letters}')"
+                )
+
 
 @dataclass(frozen=True)
 class AircraftLayout:
