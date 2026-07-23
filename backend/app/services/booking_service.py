@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.exceptions import (
+    BookingNotFoundError,
     FlightNotFoundError,
     SeatAlreadyBookedError,
     SeatNotBelongsToFlightError,
@@ -94,3 +95,33 @@ class BookingService:
         except IntegrityError:
             db.rollback()
             raise
+
+    @staticmethod
+    def get_booking_by_id(
+        db: Session,
+        booking_id: int,
+    ) -> Booking:
+
+        booking = BookingRepository.get_by_id(
+            db,
+            booking_id,
+        )
+
+        if not booking:
+            raise BookingNotFoundError(
+                "Booking not found."
+            )
+
+        return booking
+
+
+    @staticmethod
+    def get_my_bookings(
+        db: Session,
+        current_user: User,
+    ) -> list[Booking]:
+
+        return BookingRepository.get_by_user_id(
+            db,
+            current_user.id,
+        )
