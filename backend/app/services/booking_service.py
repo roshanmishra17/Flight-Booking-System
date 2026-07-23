@@ -11,7 +11,7 @@ from app.core.exceptions import (
     SeatNotFoundError,
 )
 from app.models.booking import Booking, BookingStatus
-from app.models.users import User
+from app.models.users import User, UserRole
 from app.repositories.booking_repository import BookingRepository
 from app.repositories.flight_repository import FlightRepository
 from app.repositories.seat_repository import SeatRepository
@@ -100,6 +100,7 @@ class BookingService:
     def get_booking_by_id(
         db: Session,
         booking_id: int,
+        current_user: User,
     ) -> Booking:
 
         booking = BookingRepository.get_by_id(
@@ -108,6 +109,14 @@ class BookingService:
         )
 
         if not booking:
+            raise BookingNotFoundError(
+                "Booking not found."
+            )
+
+        if (
+            booking.user_id != current_user.id
+            and current_user.role != UserRole.ADMIN
+        ):
             raise BookingNotFoundError(
                 "Booking not found."
             )
