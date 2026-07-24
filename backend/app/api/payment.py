@@ -78,7 +78,6 @@ def get_payment(
             current_user,
             payment_id,
         )
-
     except PaymentNotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
