@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.exceptions import (
+    BookingAlreadyExistsError,
     BookingNotFoundError,
     FlightNotFoundError,
     SeatAlreadyBookedError,
@@ -59,6 +60,20 @@ class BookingService:
             raise SeatNotBelongsToFlightError(
                 "Seat does not belong to this flight."
             )
+
+        existing_user_booking = (
+            BookingRepository.get_active_by_user_and_seat(
+                db,
+                current_user.id,
+                seat.id,
+            )
+        )
+
+        if existing_user_booking:
+            raise BookingAlreadyExistsError(
+                "You already have an active booking for this seat."
+            )
+
 
         existing_booking = BookingRepository.get_confirmed_by_seat(
             db,
