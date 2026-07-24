@@ -66,3 +66,22 @@ class BookingRepository:
             )
             .first()
         )
+
+    @staticmethod
+    def get_active_by_user_and_seat(
+        db: Session,
+        user_id: int,
+        seat_id: int,
+    ) -> Booking | None:
+        return (
+            db.query(Booking)
+            .filter(
+                Booking.user_id == user_id,
+                Booking.seat_id == seat_id,
+                Booking.status.in_([
+                    BookingStatus.PENDING,
+                    BookingStatus.CONFIRMED,
+                ]),
+            )
+            .first()
+        )
