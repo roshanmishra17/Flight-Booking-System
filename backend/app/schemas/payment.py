@@ -9,9 +9,10 @@ from app.models.payment import PaymentMethod, PaymentStatus
 class PaymentCreate(BaseModel):
     booking_id: int
     payment_method: PaymentMethod
-
-    model_config = ConfigDict(extra="forbid")
+    simulate_failure: bool = False
     
+    model_config = ConfigDict(extra="forbid")
+
 class PaymentResponse(BaseModel):
     id: int
     booking_id: int

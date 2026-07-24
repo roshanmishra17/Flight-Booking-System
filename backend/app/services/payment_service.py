@@ -58,7 +58,7 @@ class PaymentService:
             )
             PaymentRepository.create(db, payment)
 
-        payment_succeeded = True 
+        payment_succeeded = not payment_data.simulate_failure
 
         if payment_succeeded:
             payment.status = PaymentStatus.SUCCESS
