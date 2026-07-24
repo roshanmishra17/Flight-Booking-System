@@ -4,6 +4,7 @@ from app.core.exceptions import (
     BookingNotFoundError,
     InvalidBookingStatusError,
     PaymentAlreadyExistsError,
+    PaymentNotFoundError,
 )
 from app.models.booking import BookingStatus
 from app.models.payment import Payment, PaymentStatus
@@ -38,18 +39,24 @@ class PaymentService:
             )
 
         existing_payment = PaymentRepository.get_by_booking_id(db, booking.id)
-        if existing_payment:
+
+        if existing_payment and existing_payment.status == PaymentStatus.SUCCESS:
             raise PaymentAlreadyExistsError(
-                "Payment already exists for this booking."
+                "Payment already completed for this booking."
             )
 
-        payment = Payment(
-            booking_id=booking.id,
-            amount=booking.total_price,
-            payment_method=payment_data.payment_method,
-            status=PaymentStatus.PENDING,
-        )
-        PaymentRepository.create(db, payment)
+        if existing_payment:
+            payment = existing_payment
+            payment.payment_method = payment_data.payment_method
+            payment.status = PaymentStatus.PENDING
+        else:
+            payment = Payment(
+                booking_id=booking.id,
+                amount=booking.total_price,
+                payment_method=payment_data.payment_method,
+                status=PaymentStatus.PENDING,
+            )
+            PaymentRepository.create(db, payment)
 
         payment_succeeded = True 
 
@@ -67,4 +74,33 @@ class PaymentService:
 
         db.refresh(payment)
         db.refresh(booking)
+        return payment
+
+    @staticmethod
+    def get_payment(
+        db: Session,
+        current_user: User,
+        payment_id: int,
+    ) -> Payment:
+
+        payment = PaymentRepository.get_by_id(
+            db,
+            payment_id,
+        )
+
+        if not payment:
+            raise PaymentNotFoundError(
+                "Payment not found."
+            )
+
+        booking = payment.booking
+
+        if (
+            booking.user_id != current_user.id
+            and current_user.role != UserRole.ADMIN
+        ):
+            raise PaymentNotFoundError(
+                "Payment not found."
+            )
+
         return payment

@@ -91,3 +91,7 @@ class BookingAlreadyCancelledError(BookingError):
 
 class BookingAlreadyConfirmedError(BookingError):
     pass
+
+#Payment Exception
+class PaymentNotFoundError(Exception):
+    pass
