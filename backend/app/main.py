@@ -4,6 +4,7 @@ from app.api.airport import router as airport_router
 from app.api.flights import router as flight_router
 from app.api.seat import router as seat_router
 from app.api.booking import router as booking_router
+from app.api.payment import router as payment_router
 
 app = FastAPI()
 
@@ -16,3 +17,4 @@ app.include_router(airport_router)
 app.include_router(flight_router)
 app.include_router(seat_router)
 app.include_router(booking_router)
+app.include_router(payment_router)
