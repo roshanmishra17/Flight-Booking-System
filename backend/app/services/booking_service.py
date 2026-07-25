@@ -7,6 +7,9 @@ from app.core.exceptions import (
     BookingAlreadyExistsError,
     BookingNotFoundError,
     FlightNotFoundError,
+    InvalidBookingStatusError,
+    InvalidPaymentStatusError,
+    PaymentNotFoundError,
     SeatAlreadyBookedError,
     SeatNotBelongsToFlightError,
     SeatNotFoundError,
@@ -18,6 +21,8 @@ from app.repositories.flight_repository import FlightRepository
 from app.repositories.seat_repository import SeatRepository
 from app.schemas.booking import BookingCreate
 from app.utils.pnr_generator import generate_pnr
+from app.repositories.payment_repository import PaymentRepository
+from app.models.payment import PaymentStatus
 
 
 class BookingService:
@@ -149,3 +154,51 @@ class BookingService:
             db,
             current_user.id,
         )
+
+    @staticmethod
+    def cancel_booking(
+        db: Session,
+        current_user: User,
+        booking_id: int,
+    ) -> Booking:
+
+        booking = BookingRepository.get_by_id(db, booking_id)
+        if not booking:
+            raise BookingNotFoundError("Booking not found.")
+
+        if (
+            booking.user_id != current_user.id
+            and current_user.role != UserRole.ADMIN
+        ):
+            raise BookingNotFoundError("Booking not found.")
+
+        if booking.status == BookingStatus.CANCELLED:
+            raise InvalidBookingStatusError("Booking is already cancelled.")
+
+        if booking.status == BookingStatus.EXPIRED:
+            raise InvalidBookingStatusError("Expired bookings cannot be cancelled.")
+
+        if booking.status == BookingStatus.CONFIRMED:
+            payment = PaymentRepository.get_by_booking_id(db, booking.id)
+            if not payment:
+                raise PaymentNotFoundError(
+                    "Payment not found for confirmed booking."
+                )
+
+            if payment.status != PaymentStatus.SUCCESS:
+                raise InvalidPaymentStatusError(
+                    "Only successful payment can be refunded."
+                )
+
+            payment.status = PaymentStatus.REFUNDED
+
+        booking.status = BookingStatus.CANCELLED
+
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+
+        db.refresh(booking)
+        return booking
