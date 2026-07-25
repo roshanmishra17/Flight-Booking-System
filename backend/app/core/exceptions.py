@@ -95,6 +95,9 @@ class BookingAlreadyConfirmedError(BookingError):
 class BookingAlreadyExistsError(Exception):
     pass
 
+class InvalidPaymentStatusError(Exception):
+    pass
+
 #Payment Exception
 class PaymentNotFoundError(Exception):
     pass
