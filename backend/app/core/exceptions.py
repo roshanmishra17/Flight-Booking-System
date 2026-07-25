@@ -108,3 +108,8 @@ class PaymentNotFoundError(Exception):
 
 class PaymentAlreadyExistsError(Exception):
     pass
+
+#Redis Exception
+class RedisUnavailableError(Exception):
+    """Raised when Redis is unreachable for seat locking."""
+    pass
