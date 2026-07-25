@@ -8,6 +8,7 @@ from app.core.exceptions import (
     FlightAlreadyExistsError,
     FlightInUseError,
     FlightNotFoundError,
+    InvalidFlightPriceError,
     InvalidFlightRouteError,
     InvalidFlightScheduleError,
 )
@@ -68,6 +69,16 @@ class FlightService:
             )
 
         duration_minutes = int((flight_data.arrival_time - flight_data.departure_time).total_seconds()/ 60)
+
+        if duration_minutes < 15:
+            raise InvalidFlightScheduleError(
+                "Flight duration must be at least 15 minutes."
+            )
+
+        if flight_data.base_price <= 0:
+            raise InvalidFlightPriceError(
+                "Flight base price must be greater than 0."
+            )
 
         flight = Flight(
             flight_number=flight_data.flight_number,
@@ -139,8 +150,8 @@ class FlightService:
         departure_date: date,
     ) -> list[Flight]:
         
-        origin = origin_iata.upper()
-        destination = destination_iata.upper()
+        origin_iata = origin_iata.upper()
+        destination_iata = destination_iata.upper()
 
         origin = AirportRepository.get_by_iata_code(
             db,
@@ -161,7 +172,11 @@ class FlightService:
             raise AirportNotFoundError(
                 "Destination airport not found."
             )
-
+        if origin.id == destination.id:
+            raise InvalidFlightRouteError(
+                "Origin and destination airports must be different."
+            )
+        
         return FlightRepository.search_flights(
             db,
             origin.id,
@@ -210,6 +225,17 @@ class FlightService:
             else flight.arrival_time
         )
 
+        base_price = (
+            updates.base_price
+            if updates.base_price is not None
+            else flight.base_price
+        )
+
+        if base_price <= 0:
+            raise InvalidFlightPriceError(
+                "Flight base price must be greater than 0."
+            )
+
         if (
             not AirportRepository.get_by_id(
                 db,
@@ -239,7 +265,13 @@ class FlightService:
             raise InvalidFlightScheduleError(
                 "Arrival time must be after departure time."
             )
+        duration_minutes = int((arrival_time - departure_time).total_seconds() / 60)
 
+        if duration_minutes < 15:
+            raise InvalidFlightScheduleError(
+                "Flight duration must be at least 15 minutes."
+            )
+        
         flight_number = (
             updates.flight_number
             if updates.flight_number is not None
@@ -267,14 +299,8 @@ class FlightService:
         flight.destination_airport_id = destination_airport_id
         flight.departure_time = departure_time
         flight.arrival_time = arrival_time
-        flight.duration_minutes = int(
-            (arrival_time - departure_time).total_seconds() / 60
-        )
-        flight.base_price = (
-            updates.base_price
-            if updates.base_price is not None
-            else flight.base_price
-        )
+        flight.duration_minutes = duration_minutes
+        flight.base_price = base_price
         flight.aircraft_type = (
             updates.aircraft_type
             if updates.aircraft_type is not None
@@ -293,6 +319,7 @@ class FlightService:
             )
 
         except IntegrityError:
+            db.rollback()
             raise FlightAlreadyExistsError(
                 "Flight already exists."
             )
