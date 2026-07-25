@@ -9,7 +9,7 @@ from app.schemas.booking import (
     BookingResponse,
 )
 from app.services.booking_service import BookingService
-from app.core.exceptions import BookingAlreadyExistsError, BookingNotFoundError, FlightNotFoundError, SeatAlreadyBookedError, SeatNotBelongsToFlightError, SeatNotFoundError
+from app.core.exceptions import BookingAlreadyExistsError, BookingNotFoundError, FlightNotFoundError, InvalidBookingStatusError, InvalidPaymentStatusError, PaymentNotFoundError, SeatAlreadyBookedError, SeatNotBelongsToFlightError, SeatNotFoundError
 
 router = APIRouter(
     prefix="/bookings",
@@ -82,5 +82,44 @@ def get_booking(
     except BookingNotFoundError as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e),
+        )
+
+
+@router.patch("/{booking_id}/cancel", response_model=BookingResponse)
+def cancel_booking(
+    booking_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    try:
+        booking = BookingService.cancel_booking(
+            db=db,
+            current_user=current_user,
+            booking_id=booking_id,
+        )
+        return booking
+
+    except BookingNotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e),
+        )
+
+    except InvalidBookingStatusError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
+
+    except PaymentNotFoundError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e),
+        )
+
+    except InvalidPaymentStatusError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
