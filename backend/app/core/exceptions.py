@@ -42,6 +42,10 @@ class InvalidFlightRouteError(Exception):
 class InvalidFlightScheduleError(Exception):
     pass
 
+class InvalidFlightPriceError(Exception):
+    pass
+
+
 
 # Seats Exceptions
 class SeatError(Exception):
