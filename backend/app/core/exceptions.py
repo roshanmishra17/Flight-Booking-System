@@ -113,3 +113,8 @@ class PaymentAlreadyExistsError(Exception):
 class RedisUnavailableError(Exception):
     """Raised when Redis is unreachable for seat locking."""
     pass
+
+class SeatLockedError(Exception):
+    """Raised when seat is locked"""
+    pass
+
