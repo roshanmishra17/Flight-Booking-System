@@ -230,6 +230,12 @@ class BookingService:
         except Exception:
             db.rollback()
             raise
+        
+        SeatLockService.release_lock(
+            flight_id=booking.flight_id,
+            seat_id=booking.seat_id,
+        )
+
 
         db.refresh(booking)
         return booking
