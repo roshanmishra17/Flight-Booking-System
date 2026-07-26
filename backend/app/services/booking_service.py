@@ -11,6 +11,7 @@ from app.core.exceptions import (
     InvalidPaymentStatusError,
     PaymentNotFoundError,
     SeatAlreadyBookedError,
+    SeatLockedError,
     SeatNotBelongsToFlightError,
     SeatNotFoundError,
 )
@@ -23,6 +24,7 @@ from app.schemas.booking import BookingCreate
 from app.utils.pnr_generator import generate_pnr
 from app.repositories.payment_repository import PaymentRepository
 from app.models.payment import PaymentStatus
+from app.services.seat_lock_service import SeatLockService
 
 
 class BookingService:
@@ -88,32 +90,61 @@ class BookingService:
             raise SeatAlreadyBookedError(
                 "Seat is already booked."
             )
+        
+        pnr = BookingService._generate_unique_pnr(db)
 
         total_price = (
             flight.base_price
             * seat.price_multiplier
         )
 
-        booking = Booking(
-            pnr=BookingService._generate_unique_pnr(db),
-            user_id=current_user.id,
+        lock_acquired = SeatLockService.acquire_lock(
             flight_id=flight.id,
             seat_id=seat.id,
-            passenger_name=booking_data.passenger_name,
-            status=BookingStatus.PENDING,
-            total_price=total_price,
+            user_id=current_user.id
         )
+        if not lock_acquired:
+            raise SeatLockedError(
+                "Seat is temporarily reserved by another user."
+            )
+
 
         try:
+            booking = Booking(
+                pnr=pnr,
+                user_id=current_user.id,
+                flight_id=flight.id,
+                seat_id=seat.id,
+                passenger_name=booking_data.passenger_name,
+                status=BookingStatus.PENDING,
+                total_price=total_price,
+            )
+
             booking = BookingRepository.create(
                 db,
                 booking,
             )
             db.commit()
+            db.refresh(booking)
             return booking
-
         except IntegrityError:
             db.rollback()
+
+            SeatLockService.release_lock(
+                flight.id,
+                seat.id,
+            )
+
+            raise SeatAlreadyBookedError(
+                "Seat is already book."
+            )
+        except Exception:
+            db.rollback()
+
+            SeatLockService.release_lock(
+                flight_id=flight.id,
+                seat_id=seat.id,
+            )
             raise
 
     @staticmethod
