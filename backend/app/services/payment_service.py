@@ -12,6 +12,7 @@ from app.models.users import User, UserRole
 from app.repositories.booking_repository import BookingRepository
 from app.repositories.payment_repository import PaymentRepository
 from app.schemas.payment import PaymentCreate
+from app.services.seat_lock_service import SeatLockService
 
 
 class PaymentService:
@@ -71,6 +72,11 @@ class PaymentService:
         except Exception:
             db.rollback()
             raise
+        if payment.status == PaymentStatus.SUCCESS:
+            SeatLockService.release_lock(
+                flight_id=booking.flight_id,
+                seat_id=booking.seat_id,
+            )
 
         db.refresh(payment)
         db.refresh(booking)
