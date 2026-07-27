@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy.orm import Session
 
 from app.models.booking import (
@@ -84,4 +86,25 @@ class BookingRepository:
                 ]),
             )
             .first()
+        )
+
+    from datetime import datetime, timedelta
+
+    @staticmethod
+    def get_stale_pending(
+        db: Session,
+        threshold_seconds: int,
+    ) -> list[Booking]:
+
+        cutoff = datetime.utcnow() - datetime.timedelta(
+            seconds=threshold_seconds,
+        )
+
+        return (
+            db.query(Booking)
+            .filter(
+                Booking.status == BookingStatus.PENDING,
+                Booking.booked_at <= cutoff,
+            )
+            .all()
         )
