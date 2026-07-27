@@ -10,6 +10,7 @@ from app.core.exceptions import (
     InvalidBookingStatusError,
     InvalidPaymentStatusError,
     PaymentNotFoundError,
+    RedisUnavailableError,
     SeatAlreadyBookedError,
     SeatLockedError,
     SeatNotBelongsToFlightError,
@@ -239,3 +240,38 @@ class BookingService:
 
         db.refresh(booking)
         return booking
+
+    @staticmethod
+    def expire_stale_bookings(
+        db: Session,
+    ) -> int:
+
+        stale_bookings = BookingRepository.get_stale_pending(
+            db=db,
+            threshold_seconds=SeatLockService.LOCK_TTL,
+        )
+
+        if not stale_bookings:
+            return 0
+
+        for booking in stale_bookings:
+            booking.status = BookingStatus.EXPIRED
+
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+
+        expired_count = len(stale_bookings)
+
+        for booking in stale_bookings:
+            try:
+                SeatLockService.release_lock(
+                    flight_id=booking.flight_id,
+                    seat_id=booking.seat_id,
+                )
+            except RedisUnavailableError:
+                print(f"Warning: failed to release lock for booking {booking.id}")
+
+        return expired_count
