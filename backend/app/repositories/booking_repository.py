@@ -6,8 +6,6 @@ from app.models.booking import (
     Booking,
     BookingStatus,
 )
-
-
 class BookingRepository:
 
     @staticmethod
@@ -88,7 +86,6 @@ class BookingRepository:
             .first()
         )
 
-    from datetime import datetime, timedelta
 
     @staticmethod
     def get_stale_pending(
@@ -96,10 +93,22 @@ class BookingRepository:
         threshold_seconds: int,
     ) -> list[Booking]:
 
-        cutoff = datetime.utcnow() - datetime.timedelta(
+        cutoff = datetime.datetime.now() - datetime.timedelta(
             seconds=threshold_seconds,
         )
+        print("Cutoff:", cutoff)
 
+        pending = (
+                db.query(Booking)
+                .filter(Booking.status == BookingStatus.PENDING)
+                .all()
+            )
+
+        for booking in pending:
+            print(
+                f"id={booking.id}, booked_at={booking.booked_at}, "
+                f"booked_at<=cutoff? {booking.booked_at <= cutoff}"
+            )
         return (
             db.query(Booking)
             .filter(
