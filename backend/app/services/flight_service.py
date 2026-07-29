@@ -17,6 +17,12 @@ from app.repositories.airport_repository import AirportRepository
 from app.repositories.flight_repository import FlightRepository
 from app.schemas.flights import FlightCreate, FlightUpdate
 from app.services.seat_service import SeatService
+from app.models.recommendation_weights import RecommendationMode
+from app.models.search import Search
+from app.models.seats import SeatClass
+from app.models.users import User
+from app.services.recommendation_service import RecommendationService
+from app.utils.recommendation_scoring import RecommendationResult
 class FlightService:
     @staticmethod
     def create_flight(
@@ -350,3 +356,56 @@ class FlightService:
             raise FlightInUseError(
                 "Flight cannot be deleted because it has associated records."
             )
+
+    @staticmethod
+    def search_flights_ranked(
+        db: Session,
+        current_user: User,
+        origin_iata: str,
+        destination_iata: str,
+        departure_date: date,
+        travel_class: SeatClass,
+        mode: RecommendationMode,
+    ) -> list[RecommendationResult]:
+
+        origin_iata = origin_iata.upper()
+        destination_iata = destination_iata.upper()
+
+        origin = AirportRepository.get_by_iata_code(db, origin_iata)
+        if not origin:
+            raise AirportNotFoundError("Origin airport not found.")
+
+        destination = AirportRepository.get_by_iata_code(db, destination_iata)
+        if not destination:
+            raise AirportNotFoundError("Destination airport not found.")
+
+        if origin.id == destination.id:
+            raise InvalidFlightRouteError("Origin and destination airports must be different.")
+
+        search = Search(
+            user_id=current_user.id,
+            origin_airport_id=origin.id,
+            destination_airport_id=destination.id,
+            travel_date=departure_date,
+            travel_class=travel_class,
+            mode=mode,
+        )
+
+        try:
+            db.add(search)
+            db.flush()
+
+            flights = FlightRepository.search_flights(
+                db=db,
+                origin_airport_id=origin.id,
+                destination_airport_id=destination.id,
+                departure_date=departure_date,
+            )
+            ranked_results = RecommendationService.rank_flights(db=db, search=search, flights=flights)
+
+            db.commit()
+            return ranked_results
+
+        except Exception:
+            db.rollback()
+            raise
