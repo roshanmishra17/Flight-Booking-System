@@ -118,3 +118,5 @@ class SeatLockedError(Exception):
     """Raised when seat is locked"""
     pass
 
+class RecommendationWeightsNotFound(Exception):
+    pass
