@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.dependencies.auth import get_current_admin
+from app.dependencies.auth import get_current_admin, get_current_user
 from app.core.exceptions import (
     AirportNotFoundError,
     FlightAlreadyExistsError,
@@ -12,6 +12,7 @@ from app.core.exceptions import (
     FlightNotFoundError,
     InvalidFlightRouteError,
     InvalidFlightScheduleError,
+    RecommendationWeightsNotFound,
 )
 from app.models.users import User
 from app.schemas.flights import (
@@ -20,6 +21,9 @@ from app.schemas.flights import (
     FlightUpdate,
 )
 from app.services.flight_service import FlightService
+from app.schemas.flight_recommendation import RankedFlightResponse
+from app.models.recommendation_weights import RecommendationMode
+from app.models.seats import SeatClass
 
 router = APIRouter(
     prefix="/flights",
@@ -176,3 +180,30 @@ def delete_flight(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(e),
         )
+
+@router.get("/search/ranked", response_model=list[RankedFlightResponse])
+def search_flights_ranked(
+    origin: str = Query(min_length=3, max_length=3),
+    destination: str = Query(min_length=3, max_length=3),
+    departure_date: date = Query(...),
+    travel_class: SeatClass = Query(...),
+    mode: RecommendationMode = Query(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    try:
+        return FlightService.search_flights_ranked(
+            db=db,
+            current_user=current_user,
+            origin_iata=origin,
+            destination_iata=destination,
+            departure_date=departure_date,
+            travel_class=travel_class,
+            mode=mode,
+        )
+    except AirportNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except InvalidFlightRouteError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except RecommendationWeightsNotFound as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
