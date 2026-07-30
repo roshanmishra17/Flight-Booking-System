@@ -68,10 +68,11 @@ def calculate_scores(
 
         stops_component = 1 / (1 + flight.stops)
 
-        computed_score = (
+        computed_score = round(
             price_component * float(weights.price_weight)
             + duration_component * float(weights.duration_weight)
-            + stops_component * float(weights.stops_weight)
+            + stops_component * float(weights.stops_weight),
+            4
         )
 
         results.append(
