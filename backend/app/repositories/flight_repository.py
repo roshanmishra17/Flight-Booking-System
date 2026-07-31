@@ -1,5 +1,6 @@
 from datetime import date, datetime, time
 
+from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from app.models.flights import Flight
@@ -105,6 +106,41 @@ class FlightRepository:
             .order_by(
                 Flight.departure_time,
                 Flight.base_price,
+            )
+            .all()
+        )
+
+    @staticmethod
+    def get_flights_between_airports(
+        db: Session,
+        origin_airport_id: int,
+        destination_airport_id: int,
+        earliest_departure: datetime,
+        latest_departure: datetime,
+    ) -> list[Flight]:
+        return (
+            db.query(Flight)
+            .filter(
+                Flight.origin_airport_id == origin_airport_id,
+                Flight.destination_airport_id == destination_airport_id,
+                Flight.departure_time >= earliest_departure,
+                Flight.departure_time <= latest_departure,
+            )
+            .order_by(Flight.departure_time)
+            .all()
+        )
+
+    @staticmethod
+    def get_departing_flights(
+        db: Session,
+        origin_airport_id: int,
+        departure_date: date,
+    ) -> list[Flight]:
+        return (
+            db.query(Flight)
+            .filter(
+                Flight.origin_airport_id == origin_airport_id,
+                func.date(Flight.departure_time) == departure_date,
             )
             .all()
         )
