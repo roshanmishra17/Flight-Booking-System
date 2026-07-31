@@ -23,6 +23,8 @@ from app.models.seats import SeatClass
 from app.models.users import User
 from app.services.recommendation_service import RecommendationService
 from app.utils.recommendation_scoring import RecommendationResult
+from app.repositories.booking_repository import BookingRepository
+from app.services.Pricing_service import PricingService
 class FlightService:
     @staticmethod
     def create_flight(
@@ -401,6 +403,56 @@ class FlightService:
                 destination_airport_id=destination.id,
                 departure_date=departure_date,
             )
+            if not flights:
+                db.commit()
+                return []
+
+            flight_ids = [flight.id for flight in flights]
+
+            occupancy_data = BookingRepository.get_occupancy_data(
+                db=db,
+                flight_ids=flight_ids,
+            )
+
+            # Compute dynamic price for each flight
+            for flight in flights:
+
+                booked_seats, total_seats = occupancy_data.get(
+                    flight.id,
+                    (0, 0),
+                )
+
+                occupancy = PricingService.calculate_occupancy(
+                    total_seats=total_seats,
+                    booked_seats=booked_seats,
+                )
+
+                current_price = PricingService.calculate_current_price(
+                    base_price=flight.base_price,
+                    occupancy=occupancy,
+                    departure_time=flight.departure_time,
+                )            
+                occupancy_adjustment = PricingService.get_occupancy_adjustment(
+                    occupancy,
+                )
+
+                days_adjustment = PricingService.get_days_adjustment(
+                    flight.departure_time,
+                )
+                print(
+                    f"""
+                Flight: {flight.flight_number}
+                Booked Seats: {booked_seats}
+                Total Seats: {total_seats}
+                Occupancy: {occupancy}
+                Occupancy Adjustment: {occupancy_adjustment}
+                Days Adjustment: {days_adjustment}
+                Current Price: {current_price}
+                """
+                )
+
+                # Temporary attribute (not stored in DB)
+                flight.current_price = current_price
             ranked_results = RecommendationService.rank_flights(db=db, search=search, flights=flights)
 
             db.commit()
