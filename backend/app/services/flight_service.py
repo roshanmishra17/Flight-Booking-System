@@ -24,7 +24,7 @@ from app.models.users import User
 from app.services.recommendation_service import RecommendationService
 from app.utils.recommendation_scoring import RecommendationResult
 from app.repositories.booking_repository import BookingRepository
-from app.services.Pricing_service import PricingService
+from app.services.pricing_service import PricingService
 class FlightService:
     @staticmethod
     def create_flight(
