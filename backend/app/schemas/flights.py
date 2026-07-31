@@ -82,3 +82,11 @@ class FlightResponse(BaseModel):
     stops: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class AlternativeRouteResponse(BaseModel):
+    first_leg: FlightResponse
+    second_leg: FlightResponse
+    layover_minutes: int
+    total_duration: int
+    estimated_total_price: Decimal
