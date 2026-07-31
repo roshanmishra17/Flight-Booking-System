@@ -7,12 +7,13 @@ class PricingService:
     MAX_TOTAL_ADJUSTMENT = Decimal("0.50")
 
     OCCUPANCY_RULES = [
-        (Decimal("0.40"), Decimal("0.00")),
-        (Decimal("0.60"), Decimal("0.05")),
-        (Decimal("0.80"), Decimal("0.10")),
-        (Decimal("1.00"), Decimal("0.15")),
+        (0.20, Decimal("0.00")),
+        (0.40, Decimal("0.03")),
+        (0.60, Decimal("0.06")),
+        (0.80, Decimal("0.10")),
+        (1.00, Decimal("0.15")),
     ]
-
+    
     DAY_RULES = [
         (30, Decimal("0.00")),
         (14, Decimal("0.05")),
