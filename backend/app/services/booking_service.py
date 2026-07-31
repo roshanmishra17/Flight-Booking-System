@@ -26,6 +26,7 @@ from app.utils.pnr_generator import generate_pnr
 from app.repositories.payment_repository import PaymentRepository
 from app.models.payment import PaymentStatus
 from app.services.seat_lock_service import SeatLockService
+from app.services.Pricing_service import PricingService
 
 
 class BookingService:
@@ -82,7 +83,6 @@ class BookingService:
                 "You already have an active booking for this seat."
             )
 
-
         existing_booking = BookingRepository.get_confirmed_by_seat(
             db,
             seat.id,
@@ -92,13 +92,6 @@ class BookingService:
                 "Seat is already booked."
             )
         
-        pnr = BookingService._generate_unique_pnr(db)
-
-        total_price = (
-            flight.base_price
-            * seat.price_multiplier
-        )
-
         lock_acquired = SeatLockService.acquire_lock(
             flight_id=flight.id,
             seat_id=seat.id,
@@ -109,6 +102,32 @@ class BookingService:
                 "Seat is temporarily reserved by another user."
             )
 
+        pnr = BookingService._generate_unique_pnr(db)
+
+        occupancy_data = BookingRepository.get_occupancy_data(
+            db=db,
+            flight_ids=[flight.id],
+        )
+
+        booked_seats, total_seats = occupancy_data.get(
+            flight.id,
+            (0, 0),
+        )
+
+        occupancy = PricingService.calculate_occupancy(
+            total_seats=total_seats,
+            booked_seats=booked_seats,
+        )
+        current_price = PricingService.calculate_current_price(
+            base_price=flight.base_price,
+            occupancy=occupancy,
+            departure_time=flight.departure_time,
+        )
+
+        total_price = (
+            current_price
+            * seat.price_multiplier
+        )
 
         try:
             booking = Booking(
@@ -137,7 +156,7 @@ class BookingService:
             )
 
             raise SeatAlreadyBookedError(
-                "Seat is already book."
+                "Seat is already booked."
             )
         except Exception:
             db.rollback()

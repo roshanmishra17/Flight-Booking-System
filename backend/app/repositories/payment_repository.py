@@ -34,7 +34,7 @@ class PaymentRepository:
     ) -> Payment :
         return (
             db.query(Payment)
-            .filter(booking_id == Booking.id)
+            .filter(Payment.booking_id == booking_id)
             .first()
         )
 
