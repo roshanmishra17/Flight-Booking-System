@@ -1,11 +1,13 @@
 import datetime
 
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
 from app.models.booking import (
     Booking,
     BookingStatus,
 )
+from app.models.seats import Seat
 class BookingRepository:
 
     @staticmethod
@@ -117,3 +119,50 @@ class BookingRepository:
             )
             .all()
         )
+
+    from sqlalchemy import case, func
+
+
+    @staticmethod
+    def get_occupancy_data(
+        db: Session,
+        flight_ids: list[int],
+    ) -> dict[int, tuple[int, int]]:
+
+        if not flight_ids:
+            return {}
+
+        rows = (
+            db.query(
+                Seat.flight_id,
+                func.count(Seat.id).label("total_seats"),
+                func.count(
+                    case(
+                        (
+                            Booking.status == BookingStatus.CONFIRMED,
+                            1,
+                        ),
+                    )
+                ).label("booked_seats"),
+            )
+            .select_from(Seat)
+            .outerjoin(
+                Booking,
+                Booking.seat_id == Seat.id,
+            )
+            .filter(
+                Seat.flight_id.in_(flight_ids),
+            )
+            .group_by(
+                Seat.flight_id,
+            )
+            .all()
+        )
+
+        return {
+            row.flight_id: (
+                row.booked_seats,
+                row.total_seats,
+            )
+            for row in rows
+        }
