@@ -26,7 +26,7 @@ from app.utils.pnr_generator import generate_pnr
 from app.repositories.payment_repository import PaymentRepository
 from app.models.payment import PaymentStatus
 from app.services.seat_lock_service import SeatLockService
-from app.services.Pricing_service import PricingService
+from app.services.pricing_service import PricingService
 
 
 class BookingService:
