@@ -7,8 +7,20 @@ from app.api.booking import router as booking_router
 from app.api.payment import router as payment_router
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.jobs.booking_expiry import run_expiry_job
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # @app.get('/')
 # def get():
