@@ -25,6 +25,8 @@ from app.services.recommendation_service import RecommendationService
 from app.utils.recommendation_scoring import RecommendationResult
 from app.repositories.booking_repository import BookingRepository
 from app.services.pricing_service import PricingService
+from app.services.alternative_route_service import AlternativeRouteService
+from app.utils.alternative_route_result import AlternativeRouteResult
 class FlightService:
     @staticmethod
     def create_flight(
@@ -461,3 +463,46 @@ class FlightService:
         except Exception:
             db.rollback()
             raise
+
+    @staticmethod
+    def search_alternative_routes(
+    db: Session,
+    origin_iata: str,
+    destination_iata: str,
+    departure_date: date,
+    ) -> list[AlternativeRouteResult]:
+
+        origin_iata = origin_iata.upper()
+        destination_iata = destination_iata.upper()
+
+        origin = AirportRepository.get_by_iata_code(
+            db,
+            origin_iata,
+        )
+
+        if not origin:
+            raise AirportNotFoundError(
+                "Origin airport not found."
+            )
+
+        destination = AirportRepository.get_by_iata_code(
+            db,
+            destination_iata,
+        )
+
+        if not destination:
+            raise AirportNotFoundError(
+                "Destination airport not found."
+            )
+
+        if origin.id == destination.id:
+            raise InvalidFlightRouteError(
+                "Origin and destination airports must be different."
+            )
+
+        return AlternativeRouteService.find_alternative_routes(
+            db=db,
+            origin_airport_id=origin.id,
+            destination_airport_id=destination.id,
+            departure_date=departure_date,
+        )
