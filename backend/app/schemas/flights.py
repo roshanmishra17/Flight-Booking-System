@@ -77,7 +77,7 @@ class FlightResponse(BaseModel):
     arrival_time: datetime
     duration_minutes: int
     base_price: Decimal
-    current_price: Decimal
+    current_price: Decimal | None = None
     aircraft_type: str
     stops: int
 
