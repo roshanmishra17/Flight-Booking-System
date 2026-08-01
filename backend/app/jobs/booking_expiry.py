@@ -9,7 +9,5 @@ def run_expiry_job():
     try:
         expired = BookingService.expire_stale_bookings(db)
 
-        print(f"Expired {expired} bookings.")
-
     finally:
         db.close()

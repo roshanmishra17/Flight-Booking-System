@@ -98,8 +98,7 @@ class BookingRepository:
         cutoff = datetime.datetime.now() - datetime.timedelta(
             seconds=threshold_seconds,
         )
-        print("Cutoff:", cutoff)
-
+        
         pending = (
                 db.query(Booking)
                 .filter(Booking.status == BookingStatus.PENDING)
