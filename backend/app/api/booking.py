@@ -9,7 +9,7 @@ from app.schemas.booking import (
     BookingResponse,
 )
 from app.services.booking_service import BookingService
-from app.core.exceptions import BookingAlreadyExistsError, BookingNotFoundError, FlightNotFoundError, InvalidBookingStatusError, InvalidPaymentStatusError, PaymentNotFoundError, SeatAlreadyBookedError, SeatNotBelongsToFlightError, SeatNotFoundError
+from app.core.exceptions import BookingAlreadyExistsError, BookingNotFoundError, FlightNotFoundError, InvalidBookingStatusError, InvalidPaymentStatusError, PaymentNotFoundError, SeatAlreadyBookedError, SeatLockedError, SeatNotBelongsToFlightError, SeatNotFoundError
 
 router = APIRouter(
     prefix="/bookings",
@@ -42,6 +42,9 @@ def create_booking(
 
     except BookingAlreadyExistsError as e: 
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
+
+    except SeatLockedError as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail=str(e))
 
 @router.get(
     "/me",
