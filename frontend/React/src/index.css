@@ -1,0 +1,15 @@
+/* index.css */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: rgb(11, 18, 41);
+    color: rgb(11, 18, 41);
+}
+
+a {
+    color: inherit;
+}
