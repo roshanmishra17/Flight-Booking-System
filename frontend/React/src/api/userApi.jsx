@@ -3,7 +3,7 @@ import api from "./axios";
 export async function getCurrentUser() {
 
     const response = await api.get(
-        "/users/me",
+        "/user/me",
     );
 
     return response.data;
