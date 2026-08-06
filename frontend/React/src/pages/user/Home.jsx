@@ -40,7 +40,6 @@ export default function Home() {
         getAirports().then(setAirports).catch(() => setAirports([]));
     }, []);
 
-    // Restore search params after a login redirect
     useEffect(() => {
         const preserved = location.state?.searchParams;
         if (preserved) {
@@ -69,16 +68,20 @@ export default function Home() {
             return;
         }
 
-        const searchParams = { origin, destination, departureDate, travelClass, mode };
+        const query = new URLSearchParams({
+            origin,
+            destination,
+            departure_date: departureDate,
+            travel_class: travelClass,
+            mode,
+        }).toString();
 
         if (!isAuthenticated) {
-            navigate("/login", {
-                state: { redirectTo: "/search-results", searchParams },
-            });
+            navigate("/login", { state: { redirectTo: `/search-results?${query}` } });
             return;
         }
 
-        navigate("/search-results", { state: { searchParams } });
+        navigate(`/search-results?${query}`);
     }
 
     return (
