@@ -13,7 +13,6 @@ class RecommendationRepository:
         db: Session,
         mode: RecommendationMode,
     ) -> RecommendationWeight | None:
-        print(f"Querying mode={mode!r}, type={type(mode)}")
 
         return (
             db.query(RecommendationWeight)
