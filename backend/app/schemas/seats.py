@@ -28,6 +28,7 @@ class SeatMapResponse(BaseModel):
     id: int
     seat_number: str
     seat_class: SeatClass
+    seat_position: SeatPosition
     price_multiplier: Decimal
     availability: SeatAvailability
 
