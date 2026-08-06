@@ -18,7 +18,7 @@ export default function AppRoutes() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            <Route path="/search" element={<SearchResults />} />
+            <Route path="/search-results" element={<SearchResults />} />
 
             <Route path="/seat-selection" element={<SeatSelection />} />
 
