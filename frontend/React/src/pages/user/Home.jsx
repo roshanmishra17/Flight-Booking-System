@@ -125,7 +125,6 @@ export default function Home() {
                         <select value={travelClass} onChange={(e) => setTravelClass(e.target.value)}>
                             <option value="economy">Economy</option>
                             <option value="business">Business</option>
-                            <option value="first">First</option>
                         </select>
                     </div>
 

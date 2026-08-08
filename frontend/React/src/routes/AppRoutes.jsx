@@ -20,7 +20,7 @@ export default function AppRoutes() {
 
             <Route path="/search-results" element={<SearchResults />} />
 
-            <Route path="/seat-selection" element={<SeatSelection />} />
+            <Route path="/seat-selection/:flightId" element={<SeatSelection />} />
 
             <Route path="/booking/:bookingId" element={<Booking />} />
 
