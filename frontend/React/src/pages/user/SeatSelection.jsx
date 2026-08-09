@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { getSeatMap } from "../../api/seatApi";
-// import { createBooking } from "../../api/bookingApi";
+import { createBooking } from "../../api/bookingApi";
 import SeatMap from "../../components/SeatMap";
 import { formatCurrency } from "../../utils/formatTime";
 import "../../CSS/SeatSelection.css";
@@ -45,7 +45,7 @@ export default function SeatSelection() {
                 seat_id: selectedSeat.id,
                 passenger_name: passengerName.trim(),
             });
-            navigate(`/payment/${result.id}`);
+            navigate(`/booking-summary/${result.id}`);
         } catch (err) {
             if (err.response?.status === 409) {
                 setError(
