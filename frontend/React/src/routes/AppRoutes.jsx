@@ -9,6 +9,7 @@ import Booking from "../pages/user/Booking";
 import Payment from "../pages/user/Payment";
 import MyBookings from "../pages/user/MyBookings";
 import AdminDashboard from "../admin/AdminDashboard";
+import BookingSummary from "../pages/user/BookingSummary";
 
 export default function AppRoutes() {
     return (
@@ -16,11 +17,14 @@ export default function AppRoutes() {
             <Route path="/" element={<Home />} />
 
             <Route path="/login" element={<Login />} />
+
             <Route path="/register" element={<Register />} />
 
             <Route path="/search-results" element={<SearchResults />} />
 
             <Route path="/seat-selection/:flightId" element={<SeatSelection />} />
+            
+            <Route path="/booking-summary/:bookingId" element={<BookingSummary />} />
 
             <Route path="/booking/:bookingId" element={<Booking />} />
 
