@@ -1,0 +1,342 @@
+
+.summary-page {
+    min-height: calc(100vh - 72px);
+    padding: 48px 24px;
+    background: #f5f3ee;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+.summary-card {
+    width: 100%;
+    max-width: 760px;
+
+    background: #ffffff;
+    border-radius: 18px;
+
+    padding: 32px;
+
+    box-shadow: 0 12px 35px rgba(11, 18, 41, 0.08);
+    color: #0b1229;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.summary-eyebrow {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: rgba(11, 18, 41, 0.45);
+}
+
+.summary-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.summary-flight-number {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: rgba(11, 18, 41, 0.55);
+}
+
+.summary-pnr {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #f5f3ee;
+}
+
+.summary-pnr span {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(11, 18, 41, 0.45);
+}
+
+.summary-pnr strong {
+    margin-top: 3px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #0b1229;
+}
+
+.summary-flight {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    align-items: center;
+    padding: 24px 0;
+}
+
+.summary-airport {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-airport:last-child {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.summary-airport strong {
+    font-size: 30px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+}
+
+.summary-airport span {
+    margin-top: 4px;
+    max-width: 180px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgba(11, 18, 41, 0.55);
+}
+
+.summary-airport small {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0b1229;
+}
+
+.summary-route-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 20px;
+}
+
+.summary-route-line > span {
+    font-size: 11px;
+    color: rgba(11, 18, 41, 0.45);
+}
+
+.summary-line {
+    width: 100%;
+    height: 1px;
+    background: rgba(11, 18, 41, 0.16);
+}
+
+.summary-line::before {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: rgba(11, 18, 41, 0.16);
+}
+
+.summary-line span {
+    position: absolute;
+}
+
+.summary-divider {
+    height: 1px;
+    background: rgba(11, 18, 41, 0.09);
+    margin: 8px 0 26px;
+}
+
+.summary-section {
+    margin-bottom: 24px;
+}
+
+.summary-section h2 {
+    margin: 0 0 18px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0b1229;
+}
+
+.summary-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.summary-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.summary-detail span {
+    font-size: 11px;
+    color: rgba(11, 18, 41, 0.45);
+}
+
+.summary-detail strong {
+    font-size: 13px;
+    font-weight: 650;
+    color: #0b1229;
+}
+
+.summary-price {
+    margin-top: 6px;
+}
+
+.summary-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    font-size: 13px;
+    color: rgba(11, 18, 41, 0.6);
+}
+
+.summary-price-row strong {
+    color: #0b1229;
+    font-weight: 650;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 16px;
+    border-radius: 12px;
+    background: #f5f3ee;
+}
+
+.summary-total span {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.summary-total strong {
+    font-size: 22px;
+    font-weight: 750;
+    color: #0b1229;
+}
+
+.summary-continue {
+    width: 100%;
+    margin-top: 24px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #e8a33d;
+    color: #0b1229;
+    font-size: 14px;
+    font-weight: 750;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+.summary-continue:hover {
+    background: #d99532;
+    transform: translateY(-1px);
+    box-shadow:
+        0 8px 18px rgba(232, 163, 61, 0.22);
+}
+
+.summary-continue:active {
+    transform: translateY(0);
+}
+
+.summary-status {
+    width: 100%;
+    max-width: 760px;
+    padding: 40px;
+    border-radius: 14px;
+    background: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    color: rgba(11, 18, 41, 0.6);
+    box-shadow: 0 12px 35px rgba(11, 18, 41, 0.06);
+}
+
+.summary-error {
+    color: #b42318;
+}
+
+@media (max-width: 700px) {
+
+    .summary-page {
+        padding: 24px 14px;
+    }
+
+    .summary-card {
+        padding: 22px;
+        border-radius: 14px;
+    }
+
+    .summary-header {
+        margin-bottom: 20px;
+    }
+
+    .summary-header h1 {
+        font-size: 23px;
+    }
+
+    .summary-pnr {
+        padding: 8px 10px;
+    }
+
+    .summary-flight {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        text-align: center;
+    }
+
+    .summary-airport {
+        align-items: center;
+        text-align: center;
+    }
+
+    .summary-airport:last-child {
+        align-items: center;
+        text-align: center;
+    }
+
+    .summary-route-line {
+        padding: 0 30px;
+    }
+
+    .summary-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 420px) {
+
+    .summary-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .summary-pnr {
+        align-items: flex-start;
+    }
+
+    .summary-airport strong {
+        font-size: 26px;
+    }
+
+    .summary-details {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .summary-total strong {
+        font-size: 19px;
+    }
+}
