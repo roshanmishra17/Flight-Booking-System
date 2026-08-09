@@ -26,3 +26,8 @@ export async function searchAlternativeRoutes({ origin, destination, departureDa
     });
     return response.data;
 }
+
+export async function getFlight(flightId) {
+    const response = await api.get(`/flights/${flightId}`);
+    return response.data;
+}
