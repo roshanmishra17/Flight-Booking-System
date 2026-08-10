@@ -18,7 +18,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://localhost:4173",
-        "skyroute-flight-booking-system.vercel.app",
+        "https://skyroute-flight-booking-system.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
