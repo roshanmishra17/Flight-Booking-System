@@ -1,0 +1,130 @@
+.confirmed-page {
+    min-height: calc(100vh - 60px);
+    background: #0b1229;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+}
+
+.confirmed-status {
+    text-align: center;
+    color: #94a3b8;
+    padding: 60px 24px;
+    font-size: 14px;
+}
+
+.confirmed-card {
+    width: 100%;
+    max-width: 440px;
+    background: #f5f3ee;
+    border-radius: 16px;
+    padding: 36px 32px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.confirmed-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #16a34a;
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.confirmed-card h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 22px;
+    color: #0b1229;
+    margin: 0;
+}
+
+.confirmed-subtext {
+    color: rgba(11, 18, 41, 0.55);
+    font-size: 13px;
+    margin: 6px 0 24px;
+}
+
+.confirmed-pnr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(232, 163, 61, 0.12);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: rgba(11, 18, 41, 0.6);
+    margin-bottom: 20px;
+}
+
+.confirmed-pnr strong {
+    font-size: 15px;
+    color: #0b1229;
+    letter-spacing: 0.04em;
+}
+
+.confirmed-divider {
+    height: 1px;
+    background: rgba(11, 18, 41, 0.1);
+    margin-bottom: 16px;
+}
+
+.confirmed-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: rgba(11, 18, 41, 0.55);
+    padding: 6px 0;
+    text-align: left;
+}
+
+.confirmed-row span:last-child {
+    color: #0b1229;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.confirmed-total {
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(11, 18, 41, 0.1);
+    font-weight: 600;
+}
+
+.confirmed-total span:last-child {
+    font-size: 17px;
+}
+
+.confirmed-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.confirmed-cta {
+    background: #e8a33d;
+    color: #0b1229;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.confirmed-cta:hover {
+    background: #dc9530;
+}
+
+.confirmed-secondary {
+    color: rgba(11, 18, 41, 0.55);
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}

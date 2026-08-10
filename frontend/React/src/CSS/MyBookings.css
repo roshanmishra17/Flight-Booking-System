@@ -1,0 +1,234 @@
+.mybookings-page {
+    min-height: calc(100vh - 60px);
+    background: #0b1229;
+    padding: 40px 24px 80px;
+}
+
+.mybookings-page h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 26px;
+    color: #f5f3ee;
+    max-width: 780px;
+    margin: 0 auto 28px;
+}
+
+.mybookings-status {
+    text-align: center;
+    color: #94a3b8;
+    padding: 60px 24px;
+    font-size: 14px;
+}
+
+.mybookings-error-banner {
+    max-width: 780px;
+    margin: 0 auto 20px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+}
+
+.mybookings-empty {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+    background: rgba(245, 243, 238, 0.05);
+    border-radius: 12px;
+    padding: 48px 24px;
+}
+
+.mybookings-empty p {
+    color: #94a3b8;
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+
+.mybookings-empty-cta {
+    display: inline-block;
+    background: #e8a33d;
+    color: #0b1229;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.mybookings-list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.booking-item {
+    background: #f5f3ee;
+    border-radius: 12px;
+    padding: 20px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.booking-item-main {
+    flex: 1;
+    min-width: 240px;
+}
+
+.booking-item-route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.booking-item-airports {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0b1229;
+}
+
+.booking-item-arrow {
+    color: #e8a33d;
+}
+
+.booking-item-status {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.status-pending {
+    background: rgba(232, 163, 61, 0.15);
+    color: #b5791f;
+}
+
+.status-confirmed {
+    background: rgba(22, 163, 74, 0.12);
+    color: #15803d;
+}
+
+.status-cancelled {
+    background: rgba(11, 18, 41, 0.08);
+    color: rgba(11, 18, 41, 0.45);
+}
+
+.status-expired {
+    background: rgba(220, 38, 38, 0.1);
+    color: #b91c1c;
+}
+
+.booking-item-times {
+    font-size: 12px;
+    color: rgba(11, 18, 41, 0.5);
+    margin: 0 0 12px;
+}
+
+.booking-item-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12px;
+    color: rgba(11, 18, 41, 0.6);
+}
+
+.booking-item-price {
+    font-weight: 700;
+    color: #0b1229;
+    margin-left: auto;
+}
+
+.booking-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.booking-view-ticket {
+    background: none;
+    border: 1px solid rgba(11, 18, 41, 0.2);
+    color: #0b1229;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.booking-view-ticket:hover {
+    background: rgba(11, 18, 41, 0.05);
+}
+
+.booking-cancel-trigger {
+    background: none;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #b91c1c;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.booking-cancel-trigger:hover {
+    background: rgba(220, 38, 38, 0.06);
+}
+
+.booking-cancel-confirm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(11, 18, 41, 0.6);
+}
+
+.booking-cancel-yes {
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.booking-cancel-no {
+    background: none;
+    border: none;
+    color: rgba(11, 18, 41, 0.5);
+    font-size: 11px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .booking-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-item-details {
+        gap: 10px;
+    }
+
+    .booking-item-price {
+        margin-left: 0;
+    }
+
+    .booking-item-actions {
+        justify-content: flex-end;
+    }
+}
