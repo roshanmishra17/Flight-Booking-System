@@ -31,3 +31,8 @@ export async function getFlight(flightId) {
     const response = await api.get(`/flights/${flightId}`);
     return response.data;
 }
+
+export async function getFlights() {
+    const response = await api.get("/flights");
+    return response.data;
+}
