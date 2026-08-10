@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 import { useAuth } from "../hooks/useAuth";
-import "./Navbar.css";
+import "../CSS/Navbar.css";
 
 export default function Navbar() {
     const { isAuthenticated, user, logout, loading } = useAuth();
