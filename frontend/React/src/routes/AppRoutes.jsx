@@ -10,6 +10,7 @@ import Payment from "../pages/user/Payment";
 import MyBookings from "../pages/user/MyBookings";
 import AdminDashboard from "../admin/AdminDashboard";
 import BookingSummary from "../pages/user/BookingSummary";
+import BookingConfirmed from "../pages/user/BookingConfirmed";
 
 export default function AppRoutes() {
     return (
@@ -29,6 +30,8 @@ export default function AppRoutes() {
             <Route path="/booking/:bookingId" element={<Booking />} />
 
             <Route path="/payment/:bookingId" element={<Payment />} />
+
+            <Route path="booking-confirmed/:bookingId" element={<BookingConfirmed/>}/>
 
             <Route path="/my-bookings" element={<MyBookings />} />
 
