@@ -1,6 +1,6 @@
 # ✈️ SkyRoute — Flight Booking & Recommendation System
 
-SkyRoute is a full-stack flight booking platform that combines a complete booking workflow with real-time seat locking, dynamic pricing, and personalized flight recommendations.
+SkyRoute is a full-stack flight booking platform that combines a complete booking workflow with Redis-based temporary seat locking, dynamic pricing, and personalized flight recommendations.
 
 ## 🚀 Live Demo
 
@@ -69,6 +69,24 @@ Pricing adjustments are capped to prevent unrealistic fare changes.
 - Seat and passenger information
 - Payment status
 - My Bookings page
+
+### 🤖 Recommendation Engine
+
+The recommendation engine supports three modes:
+
+- **Cheapest**
+- **Fastest**
+- **Balanced**
+
+Flight price, duration, and stop count are normalized into 0–1 scores and combined using mode-specific weights to produce the final ranking.
+
+### 🔀 Alternative Route Discovery
+
+SkyRoute discovers one-stop alternatives by combining compatible flight legs.
+
+- Minimum layover: **45 minutes**
+- Maximum layover: **4 hours**
+- Returns the top **3 ranked alternatives**
 
 ---
 
@@ -163,7 +181,7 @@ Flight-Booking-System/
 │   ├── alembic.ini           # Alembic configuration
 │   └── requirements.txt      # Backend dependencies
 │
-frontend/React/
+|frontend/React/
 │
 ├── public/                   # Static assets
 │
@@ -208,13 +226,15 @@ Make sure you have the following installed:
 git clone https://github.com/roshanmishra17/Flight-Booking-System.git
 cd Flight-Booking-System
 
+cd backend
+
 python -m venv venv
 
 .\venv\Scripts\activate
 
 pip install -r requirements.txt
 
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 ## API Documentation
@@ -225,11 +245,44 @@ http://localhost:8000/docs
 
 ## Environment Variables
 
-Create a `.env` file in the project root with the following values:
+Create a `.env` file in inside backend directory:
 
 ```env
 DATABASE_URL=postgresql://user:password@host:port/db
 SECRET_KEY=your_secret_key
+REDIS_URL=your_redis_url
 ALGORITHM=HS256
 ACCESS_TOKEN_TIME=60
 ```
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- React Router
+- Axios
+- React Hook Form
+- CSS
+
+### Backend
+
+- Python
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- JWT Authentication
+- REST APIs
+- APScheduler
+
+### Database & Infrastructure
+
+- PostgreSQL
+- Redis
+- Vercel
+- Render
+- Supabase
+
+---
+
