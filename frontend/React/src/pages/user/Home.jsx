@@ -22,8 +22,8 @@ export default function Home() {
     const location = useLocation();
 
     const KNOWN_PAIRS = [
-        ["BOM", "MNN"], ["NMI", "BLR"], ["BOM", "BLR"],
-        ["DEL", "HYD"], ["BOM", "GOI"], ["BLR", "MNN"],
+        ["BOM", "MAA"], ["NMI", "BLR"], ["BOM", "BLR"],
+        ["DEL", "HYD"], ["BOM", "GOI"], ["BLR", "MAA"],
     ];
 
     const popularRoutes = KNOWN_PAIRS
