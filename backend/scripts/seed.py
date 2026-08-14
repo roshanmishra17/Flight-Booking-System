@@ -108,6 +108,21 @@ def seed_flights(db, airport_map):
                 db.rollback()
                 print(f"Skipped {flight_number}: {e}")
 
+def seed_recommendation_weights(db):
+    from app.models.recommendation_weights import RecommendationWeight, RecommendationMode
+
+    weights = [
+        {"mode": RecommendationMode.CHEAPEST, "price_weight": 0.70, "duration_weight": 0.10, "stops_weight": 0.20},
+        {"mode": RecommendationMode.FASTEST, "price_weight": 0.10, "duration_weight": 0.70, "stops_weight": 0.20},
+        {"mode": RecommendationMode.BALANCED, "price_weight": 0.40, "duration_weight": 0.30, "stops_weight": 0.30},
+    ]
+    for w in weights:
+        existing = db.query(RecommendationWeight).filter(RecommendationWeight.mode == w["mode"]).first()
+        if existing:
+            continue
+        db.add(RecommendationWeight(**w))
+    db.commit()
+
 
 def main():
     db = SessionLocal()
@@ -117,6 +132,9 @@ def main():
 
         print("Seeding flights + seats...")
         seed_flights(db, airport_map)
+
+        print("seeding recommendation weightss")
+        seed_recommendation_weights(db)
 
         print("Done.")
     finally:

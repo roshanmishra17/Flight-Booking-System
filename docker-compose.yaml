@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: skyroute
+      POSTGRES_PASSWORD: skyroute
+      POSTGRES_DB: skyroute
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://skyroute:skyroute@postgres:5432/skyroute
+      SECRET_KEY:  e0aa554596418e1b15b1ea766adc98e14b13c93069f5f1fd279bfe7666756937
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend/React
+      args:
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:80"
+    depends_on:
+        - backend
+
+volumes:
+  pgdata:
