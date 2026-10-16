@@ -81,11 +81,38 @@
     min-width: 120px;
 }
 
+
+/* Base price shown when the fare is discounted */
 .flight-card-base-price {
     font-size: 12px;
-    color: rgba(11, 18, 41, 0.4);
+    color: rgba(11, 18, 41, 0.55);
     text-decoration: line-through;
 }
+
+/* Base fare shown when dynamic pricing increases the fare */
+.flight-card-base-label {
+    font-size: 12px;
+    color: rgba(11, 18, 41, 0.65);
+    text-decoration: none;
+}
+
+/* Label explaining the price increase */
+.flight-card-dynamic-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #94621b;
+    background: rgba(232, 163, 61, 0.12);
+    padding: 3px 7px;
+    border-radius: 5px;
+}
+
+/* Current fare */
+.flight-card-current-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0b1229;
+}
+
 
 .flight-card-current-price {
     font-size: 20px;
