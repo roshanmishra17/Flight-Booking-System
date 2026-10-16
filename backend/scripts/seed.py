@@ -5,7 +5,7 @@ from datetime import date, datetime, timedelta
 from sqlalchemy.exc import IntegrityError
 
 from app.core.database import SessionLocal
-from app. import Airport
+from app.models import Airport
 from app.models.flights import Flight
 from app.models.recommendation_weights import (
     RecommendationMode,
