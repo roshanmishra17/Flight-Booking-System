@@ -21,7 +21,7 @@ from app.schemas.payment import (
 )
 from app.services.payment_service import PaymentService
 from app.services.notification_service import NotificationService
-from app.models import payment
+from app.models.payment import PaymentStatus
 from fastapi import BackgroundTasks
 
 router = APIRouter(
@@ -42,7 +42,7 @@ def make_payment(
     db: Session = Depends(get_db),
 ):
     try:
-        PaymentService.make_payment(
+        payment = PaymentService.make_payment(
             db,
             current_user,
             payment_data,
@@ -66,7 +66,7 @@ def make_payment(
             detail=str(e),
         )
 
-    if payment.status == payment.PaymentStatus.SUCCESS:
+    if payment.status == PaymentStatus.SUCCESS:
         email_data = NotificationService.build_booking_confirmation(payment.booking)
         if email_data:
             background_tasks.add_task(
