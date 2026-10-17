@@ -21,7 +21,7 @@ from app.schemas.payment import (
 )
 from app.services.payment_service import PaymentService
 from app.services.notification_service import NotificationService
-from backend.app.models import payment
+from app.models import payment
 from fastapi import BackgroundTasks
 
 router = APIRouter(
