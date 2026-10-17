@@ -137,43 +137,30 @@ function SeatSection({
     );
 }
 
-function SeatButton({
-    seat,
-    selected,
-    onSelect,
-}) {
+function SeatButton({ seat, selected, onSelect }) {
+    const unavailable = seat.availability !== "available";
 
-    const unavailable =
-        seat.availability !== "available";
+    let stateClass = "seat-available";
+    if (seat.availability === "booked") stateClass = "seat-booked";
+    else if (seat.availability === "reserved") stateClass = "seat-reserved";
+    else if (selected) stateClass = "seat-selected";
 
-    const classes = [
-        "seat",
-        `seat-${seat.seat_class}`,
-        unavailable
-            ? "seat-booked"
-            : selected
-                ? "seat-selected"
-                : "seat-available",
-    ].join(" ");
+    const classes = ["seat", `seat-${seat.seat_class}`, stateClass].join(" ");
+
+    const status =
+        seat.availability === "booked" ? "Booked"
+        : seat.availability === "reserved" ? "Held by another user"
+        : "Available";
 
     return (
-
         <button
             className={classes}
             disabled={unavailable}
             onClick={() => onSelect(seat)}
-            title={
-                `${seat.seat_number}
-                ${seat.seat_position}
-                ${seat.seat_class}
-                x${seat.price_multiplier}`
-            }
+            title={`${seat.seat_number} · ${seat.seat_position} · ${seat.seat_class} · x${seat.price_multiplier} · ${status}`}
         >
-
             {seat.seat_number.replace(/^\d+/, "")}
-
         </button>
-
     );
 }
 
@@ -196,6 +183,10 @@ function Legend() {
             <LegendItem
                 color="seat-booked"
                 label="Booked"
+            />
+            <LegendItem
+                color="seat-reserved"
+                label="Held"
             />
 
         </div>
