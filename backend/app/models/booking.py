@@ -97,6 +97,18 @@ class Booking(Base):
         String(100),
         nullable=False,
     )
+    passenger_age = Column(
+        Integer, 
+        nullable=True
+    )
+    passenger_phone = Column(
+        String(15), 
+        nullable=True
+    )    
+    passenger_email = Column(
+        String(255), 
+        nullable=True
+    )
 
     status = Column(
         Enum(
