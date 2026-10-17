@@ -165,3 +165,15 @@ class BookingRepository:
             )
             for row in rows
         }
+
+    @staticmethod
+    def get_confirmed_seat_ids_for_flight(db: Session, flight_id: int) -> set[int]:
+        rows = (
+            db.query(Booking.seat_id)
+            .filter(
+                Booking.flight_id == flight_id,
+                Booking.status == BookingStatus.CONFIRMED,
+            )
+            .all()
+        )
+        return {row[0] for row in rows}

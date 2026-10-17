@@ -42,3 +42,17 @@ class SeatLockService:
             raise RedisUnavailableError(
                 "Seat locking service is temporarily unavailable."
             ) from e
+
+
+    @staticmethod
+    def get_locked_seat_ids(flight_id: int, seat_ids: list[int]) -> set[int]:
+        if not seat_ids:
+            return set()
+
+        keys = [SeatLockService._lock_key(flight_id, sid) for sid in seat_ids]
+        try:
+            values = redis_client.mget(keys)  # one round trip for all seats
+        except redis.exceptions.ConnectionError:
+            return set()  # Redis down: show as available, booking still checks the lock
+
+        return {sid for sid, value in zip(seat_ids, values) if value is not None}
