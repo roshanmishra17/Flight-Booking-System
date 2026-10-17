@@ -26,18 +26,15 @@ export default function SeatSelection() {
     function validate() {
         if (!selectedSeat) return "Please select a seat.";
         if (!passengerName.trim()) return "Enter the passenger name.";
-        const a = Number(age);
-        if (!Number.isInteger(a) || a < 1 || a > 120) return "Enter a valid age.";
-        if (!/^(?:\+91|91|0)?[6-9]\d{9}$/.test(phone.replace(/[\s-]/g, "")))
-            return "Enter a valid 10-digit mobile number.";
-        if (!/^\S+@\S+\.\S+$/.test(email.trim())) return "Enter a valid email address.";
-        return null;
-    }
+        const normalizedPhone = phone.replace(/[\s-]/g, "");
 
-    const validationError = validate();
-    if (validationError) {
-        setError(validationError);
-        return;
+        if (!/^(?:\+91|91|0)?[6-9]\d{9}$/.test(normalizedPhone)) {
+            return "Enter a valid 10-digit mobile number.";
+        }
+
+        if (!/^\S+@\S+\.\S+$/.test(email.trim())) {
+            return "Enter a valid email address.";
+        }
     }
 
     useEffect(() => {
@@ -56,6 +53,13 @@ export default function SeatSelection() {
     async function handleConfirm() {
         if (!selectedSeat || !passengerName.trim()) {
             setError("Please select a seat and enter the passenger name.");
+            return;
+        }
+
+        const validationError = validate();
+
+        if (validationError) {
+            setError(validationError);
             return;
         }
 
