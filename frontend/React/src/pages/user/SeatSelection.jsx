@@ -18,6 +18,28 @@ export default function SeatSelection() {
     const [booking, setBooking] = useState(false);
     const [error, setError] = useState(null);
 
+
+    const [age, setAge] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+
+    function validate() {
+        if (!selectedSeat) return "Please select a seat.";
+        if (!passengerName.trim()) return "Enter the passenger name.";
+        const a = Number(age);
+        if (!Number.isInteger(a) || a < 1 || a > 120) return "Enter a valid age.";
+        if (!/^(?:\+91|91|0)?[6-9]\d{9}$/.test(phone.replace(/[\s-]/g, "")))
+            return "Enter a valid 10-digit mobile number.";
+        if (!/^\S+@\S+\.\S+$/.test(email.trim())) return "Enter a valid email address.";
+        return null;
+    }
+
+    const validationError = validate();
+    if (validationError) {
+        setError(validationError);
+        return;
+    }
+
     useEffect(() => {
         getSeatMap(flightId)
             .then(setSeats)
@@ -44,6 +66,9 @@ export default function SeatSelection() {
                 flight_id: Number(flightId),
                 seat_id: selectedSeat.id,
                 passenger_name: passengerName.trim(),
+                passenger_age: Number(age),
+                passenger_phone: phone,
+                passenger_email: email.trim(),
             });
             navigate(`/booking-summary/${result.id}`);
         } catch (err) {
@@ -92,7 +117,21 @@ export default function SeatSelection() {
                             placeholder="As per ID"
                         />
                     </div>
-
+                    <div className="seat-selection-field">
+                        <label>Age</label>
+                        <input type="number" min="1" max="120" value={age}
+                            onChange={(e) => setAge(e.target.value)} placeholder="e.g. 24" />
+                    </div>
+                    <div className="seat-selection-field">
+                        <label>Mobile number</label>
+                        <input type="tel" value={phone}
+                            onChange={(e) => setPhone(e.target.value)} placeholder="10-digit mobile" />
+                    </div>
+                    <div className="seat-selection-field">
+                        <label>Email</label>
+                        <input type="email" value={email}
+                            onChange={(e) => setEmail(e.target.value)} placeholder="Ticket will be sent here" />
+                    </div>
                     {error && <p className="seat-selection-error">{error}</p>}
 
                     <button
