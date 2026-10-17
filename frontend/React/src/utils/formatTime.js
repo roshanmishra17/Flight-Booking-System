@@ -14,3 +14,15 @@ export function formatDuration(minutes) {
 export function formatCurrency(amount) {
     return `₹${Number(amount).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
 }
+
+export function formatDate(isoString) {
+    return new Date(isoString).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+    });
+}
+
+export function isSameDay(a, b) {
+    return new Date(a).toDateString() === new Date(b).toDateString();
+}

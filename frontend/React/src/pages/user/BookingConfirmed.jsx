@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBooking } from "../../api/bookingApi";
 import { getFlight } from "../../api/flightApi";
 import { getAirports } from "../../api/airportApi";
-import { formatCurrency, formatTime } from "../../utils/formatTime";
+import { formatCurrency, formatTime, formatDate } from "../../utils/formatTime";
 import "../../CSS/BookingConfirmed.css";
 
 export default function BookingConfirmed() {
@@ -82,6 +82,14 @@ export default function BookingConfirmed() {
                 <div className="confirmed-row">
                     <span>Departure</span>
                     <span>{formatTime(flight.departure_time)}</span>
+                </div>
+                <div className="confirmed-row">
+                    <span>Arrival</span>
+                    <span>
+                        {formatTime(flight.arrival_time)}
+                        {!isSameDay(flight.departure_time, flight.arrival_time) &&
+                            ` (${formatDate(flight.arrival_time)})`}
+                    </span>
                 </div>
                 <div className="confirmed-row">
                     <span>Passenger</span>

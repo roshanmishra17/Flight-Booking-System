@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getMyBookings, cancelBooking } from "../../api/bookingApi";
 import { getFlights} from "../../api/flightApi";
 import { getAirports } from "../../api/airportApi";
-import { formatCurrency, formatTime } from "../../utils/formatTime";
+import { formatCurrency, formatTime, formatDate } from "../../utils/formatTime";
 import "../../CSS/MyBookings.css";
 
 const CANCELLABLE = ["pending", "confirmed"];
@@ -85,7 +85,8 @@ export default function MyBookings() {
 
                                 {flight && (
                                     <p className="booking-item-times">
-                                        {flight.flight_number} · {formatTime(flight.departure_time)} → {formatTime(flight.arrival_time)}
+                                        {flight.flight_number} · {formatDate(flight.departure_time)} ·{" "}
+                                        {formatTime(flight.departure_time)} → {formatTime(flight.arrival_time)}
                                     </p>
                                 )}
 

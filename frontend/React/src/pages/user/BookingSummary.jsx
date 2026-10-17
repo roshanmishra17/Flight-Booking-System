@@ -5,7 +5,7 @@ import { getBooking } from "../../api/bookingApi";
 import { getFlight } from "../../api/flightApi";
 import { getAirports } from "../../api/airportApi";
 
-import { formatCurrency, formatTime } from "../../utils/formatTime";
+import { formatCurrency, formatTime, formatDate } from "../../utils/formatTime";
 
 import "../../CSS/BookingSummary.css";
 
@@ -168,6 +168,9 @@ export default function BookingSummary() {
                             {formatTime(
                                 flight.arrival_time
                             )}
+                        </small>
+                        <small>
+                            {formatDate(flight.departure_time)} · {formatTime(flight.departure_time)}
                         </small>
                     </div>
                 </div>
