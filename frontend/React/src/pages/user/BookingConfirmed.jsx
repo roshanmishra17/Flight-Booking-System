@@ -80,16 +80,14 @@ export default function BookingConfirmed() {
                     </span>
                 </div>
                 <div className="confirmed-row">
-                    <span>Departure</span>
-                    <span>{formatTime(flight.departure_time)}</span>
-                </div>
-                <div className="confirmed-row">
                     <span>Arrival</span>
                     <span>
-                        {formatTime(flight.arrival_time)}
-                        {!isSameDay(flight.departure_time, flight.arrival_time) &&
-                            ` (${formatDate(flight.arrival_time)})`}
+                        {formatDate(flight.arrival_time)} · {formatTime(flight.arrival_time)}
                     </span>
+                </div>
+                <div className="confirmed-row">
+                    <span>Departure</span>
+                    <span>{formatDate(flight.departure_time)} · {formatTime(flight.departure_time)}</span>
                 </div>
                 <div className="confirmed-row">
                     <span>Passenger</span>
