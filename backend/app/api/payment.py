@@ -20,6 +20,9 @@ from app.schemas.payment import (
     PaymentResponse,
 )
 from app.services.payment_service import PaymentService
+from app.services.notification_service import NotificationService
+from backend.app.models import payment
+from fastapi import BackgroundTasks
 
 router = APIRouter(
     prefix="/payments",
@@ -34,11 +37,12 @@ router = APIRouter(
 )
 def make_payment(
     payment_data: PaymentCreate,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     try:
-        return PaymentService.make_payment(
+        PaymentService.make_payment(
             db,
             current_user,
             payment_data,
@@ -61,6 +65,16 @@ def make_payment(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(e),
         )
+
+    if payment.status == payment.PaymentStatus.SUCCESS:
+        email_data = NotificationService.build_booking_confirmation(payment.booking)
+        if email_data:
+            background_tasks.add_task(
+                NotificationService.send_booking_confirmation, email_data
+            )
+
+    return payment
+
 
 
 @router.get(
