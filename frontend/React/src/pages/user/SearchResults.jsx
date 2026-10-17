@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { searchFlights, searchFlightsRanked, searchAlternativeRoutes } from "../../api/flightApi";
-import FlightCard from "../../components/flightCard";
+import FlightCard from "../../components/FlightCard";
 import AlternativeRouteCard from "../../components/AlternativeRouteCard";
 import "../../CSS/SearchResults.css";
 

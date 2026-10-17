@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { formatTime, formatDuration, formatCurrency } from "../utils/formatTime";
 import "../CSS/FlightCard.css";
