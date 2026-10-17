@@ -136,6 +136,9 @@ class BookingService:
                 flight_id=flight.id,
                 seat_id=seat.id,
                 passenger_name=booking_data.passenger_name,
+                passenger_age = booking_data.passenger_age,
+                passenger_email = booking_data.passenger_email,
+                passenger_phone = booking_data.passenger_phone,                
                 status=BookingStatus.PENDING,
                 total_price=total_price,
             )
