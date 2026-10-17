@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBooking } from "../../api/bookingApi";
 import { getFlight } from "../../api/flightApi";
 import { getAirports } from "../../api/airportApi";
-import { formatCurrency, formatTime, formatDate } from "../../utils/formatTime";
+import { formatCurrency, formatTime, formatDate, isSameDay } from "../../utils/formatTime";
 import "../../CSS/BookingConfirmed.css";
 
 export default function BookingConfirmed() {
