@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
-
+import AuthLayout from "../../components/AuthLayout";
 import { registerUser } from "../../api/authApi";
 import "../../CSS/Login.css";
 
@@ -48,10 +48,11 @@ export default function Register() {
     }
 
     return (
-        <div className="login-page">
-            <div className="login-glow" />
-
-            <div className="login-wrap">
+            <AuthLayout
+                    heading="Book smarter from your first trip."
+                    subheading="Create a free account to search, compare and book domestic flights."
+                >
+                <div className="login-wrap">
                 <div className="login-brand">
                     <h1>SkyRoute</h1>
                     <p>Create your account</p>
@@ -75,7 +76,7 @@ export default function Register() {
                                         id="fullName"
                                         type="text"
                                         autoComplete="name"
-                                        placeholder="James Bond"
+                                        placeholder="Eg. James Bond"
                                         className={errors.fullName ? "input-error" : ""}
                                         {...register("fullName", {
                                             onChange: () => setServerError(null),
@@ -157,6 +158,6 @@ export default function Register() {
                     </div>
                 </div>
             </div>
-        </div>
+        </AuthLayout>
     );
 }

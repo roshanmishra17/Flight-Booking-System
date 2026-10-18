@@ -5,6 +5,7 @@ import { useState } from "react";
 import { loginUser } from "../../api/authApi";
 import { useAuth } from "../../hooks/useAuth";
 import "../../CSS/Login.css";
+import AuthLayout from "../../components/AuthLayout";
 
 export default function Login() {
     const {
@@ -40,15 +41,15 @@ export default function Login() {
     }
 
     return (
-        <div className="login-page">
-            <div className="login-glow" />
-
+            <AuthLayout
+                    heading="Book smarter from your first trip."
+                    subheading="Create a free account to search, compare and book domestic flights."
+                >
             <div className="login-wrap">
                 <div className="login-brand">
                     <h1>SkyRoute</h1>
                     <p>Sign in to manage your trips</p>
                 </div>
-
                 <div className="login-card">
                     <div className="login-card-main">
                         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -107,6 +108,6 @@ export default function Login() {
                     </div>
                 </div>
             </div>
-        </div>
+        </AuthLayout>
     );
 }

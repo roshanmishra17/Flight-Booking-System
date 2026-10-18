@@ -1,13 +1,13 @@
-/* Login.css */
 .login-page {
-    min-height: 100vh;
-    background: #0b1229;
+    width: 100%;
+    min-height: 0;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: 0;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .login-glow {

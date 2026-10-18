@@ -1,0 +1,223 @@
+.auth-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    min-height: 100vh;
+    background: #0b1229;
+}
+
+.auth-layout > * {
+    min-width: 0;
+}
+
+.auth-main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 32px;
+    box-sizing: border-box;
+    background: #0b1229;
+    overflow: hidden;
+}
+
+
+.auth-aside {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #101a3a 0%, #0b1229 65%);
+    border-right: 1px solid rgba(245, 243, 238, 0.06);
+}
+
+/* faint dot grid */
+.auth-aside::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(245, 243, 238, 0.07) 1px, transparent 1px);
+    background-size: 26px 26px;
+    pointer-events: none;
+}
+
+/* amber glow in the corner */
+.auth-aside::after {
+    content: "";
+    position: absolute;
+    left: -160px;
+    bottom: -200px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232, 163, 61, 0.22) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.auth-aside-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 460px;
+}
+
+.auth-aside-brand {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #f5f3ee;
+    margin: 0 0 40px;
+}
+
+.auth-aside-heading {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #f5f3ee;
+    margin: 0;
+}
+
+.auth-aside-sub {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 12px 0 32px;
+}
+
+/* example flight card */
+.auth-route-card {
+    background: rgba(245, 243, 238, 0.05);
+    border: 1px solid rgba(245, 243, 238, 0.1);
+    border-radius: 14px;
+    padding: 18px 20px;
+    backdrop-filter: blur(4px);
+    margin-bottom: 32px;
+}
+
+.auth-route-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.auth-route-tag {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(245, 243, 238, 0.4);
+}
+
+.auth-route-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e8a33d;
+    background: rgba(232, 163, 61, 0.14);
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.auth-route-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.auth-route-city {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-route-city strong {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 24px;
+    color: #f5f3ee;
+}
+
+.auth-route-city small {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.auth-route-path {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+}
+
+.auth-route-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(245, 243, 238, 0.08);
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.auth-route-price {
+    color: #f5f3ee;
+    font-weight: 700;
+}
+
+/* feature list */
+.auth-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.auth-features li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.auth-feature-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(245, 243, 238, 0.06);
+    border-radius: 10px;
+    font-size: 17px;
+}
+
+.auth-features strong {
+    display: block;
+    color: #f5f3ee;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.auth-features p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* below this width the panel hides and the form page looks as it did before */
+@media (max-width: 900px) {
+    .auth-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-aside {
+        display: none;
+    }
+
+    .auth-main {
+        min-height: 100vh;
+        padding: 24px 16px;
+    }
+}
