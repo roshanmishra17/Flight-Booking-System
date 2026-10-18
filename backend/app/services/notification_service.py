@@ -48,26 +48,44 @@ class NotificationService:
         )
         NotificationService._send_email(data["to"], data["name"], subject, body)
 
-    @staticmethod
-    def _send_email(to_email: str, to_name: str, subject: str, text: str) -> None:
-        if not (EMAIL_API_KEY and EMAIL_SENDER):
-            logger.warning("Email not configured; skipping email to %s", to_email)
-            return
-
-        payload = json.dumps({
-            "sender": {"name": EMAIL_SENDER_NAME, "email": EMAIL_SENDER},
-            "to": [{"email": to_email, "name": to_name}],
-            "subject": subject,
-            "textContent": text,
-        }).encode()
-
-        request = urllib.request.Request(
-            "https://api.brevo.com/v3/smtp/email",
-            data=payload,
-            headers={"api-key": EMAIL_API_KEY, "Content-Type": "application/json"},
-            method="POST",
+   
+@staticmethod
+def _send_email(to_email: str, to_name: str, subject: str, text: str) -> None:
+    if not (EMAIL_API_KEY and EMAIL_SENDER):
+        logger.error(
+            "Email not configured: EMAIL_API_KEY or EMAIL_SENDER is missing"
         )
-        try:
-            urllib.request.urlopen(request, timeout=10)
-        except Exception:
-            logger.exception("Failed to send email to %s", to_email)
+        return
+
+    payload = json.dumps({
+        "sender": {
+            "name": EMAIL_SENDER_NAME,
+            "email": EMAIL_SENDER,
+        },
+        "to": [{"email": to_email, "name": to_name}],
+        "subject": subject,
+        "textContent": text,
+    }).encode("utf-8")
+
+    request = urllib.request.Request(
+        "https://api.brevo.com/v3/smtp/email",
+        data=payload,
+        headers={
+            "api-key": EMAIL_API_KEY,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            logger.info(
+                "Brevo accepted confirmation email request. HTTP status: %s",
+                response.status,
+            )
+    except Exception:
+        logger.exception(
+            "Failed to send booking confirmation email to %s",
+            to_email,
+        )
