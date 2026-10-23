@@ -13,7 +13,7 @@ from app.models.recommendation_weights import (
 )
 from app.services.seat_service import SeatService
 
-START_DATE = date(2026, 10, 17)
+START_DATE = date(2026, 10, 24)
 DAYS = 7  # increase for more data (each day adds ~140 flights, ~25k seats)
 SLOT_HOURS = [6, 9, 13, 17, 21]  # 5 flights per route per day
 
